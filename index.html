@@ -4,12 +4,17 @@
 <meta charset="UTF-8">
 <script>
 (function(){
-  var t = "light";
-  try{ t = localStorage.getItem("theme") || "light"; }catch(e){}
-  document.documentElement.setAttribute("data-theme", t);
+  try{
+    var stored = localStorage.getItem("theme");
+    if (stored) document.documentElement.setAttribute("data-theme", stored);
+  }catch(e){}
 })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
 <title>Flavio Tulino | Fractional Hiring Manager for Engineering Teams</title>
 <meta name="description" content="Flavio Tulino is a fractional hiring manager who runs structured interview processes for senior engineering hires, backed by evidence instead of gut feel.">
 <meta name="robots" content="index, follow">
@@ -37,7 +42,8 @@
     "@type": "Person",
     "name": "Flavio Tulino",
     "jobTitle": "Fractional Hiring Manager",
-    "email": "flavio.tulino@gmail.com"
+    "email": "flavio.tulino@gmail.com",
+    "sameAs": ["https://www.linkedin.com/in/flaviotulino/"]
   }
 }
 </script>
@@ -147,8 +153,12 @@ html{ scroll-behavior:smooth; }
     .btn:hover{ @apply opacity-85; }
     .btn:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
 
+    .btn-ghost{ @apply font-mono text-[13px] font-medium tracking-wide no-underline inline-flex items-center gap-2 px-[18px] py-[11px] rounded border border-line text-ink-soft transition-colors; }
+    .btn-ghost:hover{ @apply border-accent text-ink; }
+    .btn-ghost:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
+
     .theme-toggle{ @apply inline-flex border border-line rounded-full p-[3px] gap-0.5; }
-    .theme-btn{ @apply font-mono text-[11.5px] tracking-wide uppercase px-3 py-1.5 rounded-full border-0 bg-transparent text-ink-faint cursor-pointer transition-colors; }
+    .theme-btn{ @apply font-mono text-[11.5px] tracking-wide uppercase px-3 py-1.5 rounded-full border-0 bg-transparent text-ink-faint cursor-pointer transition-colors inline-flex items-center gap-1.5; }
     .theme-btn:hover:not(.active){ @apply text-ink; }
     .theme-btn:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
     .theme-btn.active{ @apply bg-accent text-accent-ink; }
@@ -215,29 +225,49 @@ html{ scroll-behavior:smooth; }
 <body>
 
 <header class="sticky top-0 z-10 bg-bg border-b border-line">
-  <div class="wrap px-5 sm:px-8 flex items-center justify-between py-5">
-    <div class="font-serif font-semibold text-[19px] tracking-[-0.01em]">
-      Flavio Tulino
-      <span class="block font-mono font-normal text-[11px] tracking-[0.12em] uppercase text-ink-faint mt-0.5">Structured hiring for engineering teams</span>
-    </div>
-    <div class="flex items-center gap-3.5">
-      <div class="theme-toggle" role="group" aria-label="Theme">
-        <button type="button" class="theme-btn" data-theme-choice="light" aria-pressed="true">Light</button>
-        <button type="button" class="theme-btn" data-theme-choice="dark" aria-pressed="false">Dark</button>
+  <div class="wrap px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-2.5">
+      <svg width="26" height="26" viewBox="0 0 110 110" role="img" aria-label="Flavio Tulino logo" class="text-accent shrink-0">
+        <circle cx="55" cy="55" r="17" fill="currentColor"/>
+        <circle cx="91" cy="55" r="11" fill="currentColor" opacity="0.3"/>
+        <circle cx="55" cy="91" r="11" fill="currentColor" opacity="0.3"/>
+        <circle cx="19" cy="55" r="11" fill="currentColor" opacity="0.3"/>
+        <circle cx="55" cy="19" r="11" fill="currentColor" opacity="0.3"/>
+        <circle cx="80.46" cy="80.46" r="8" fill="currentColor" opacity="0.3"/>
+        <circle cx="29.54" cy="80.46" r="8" fill="currentColor" opacity="0.3"/>
+        <circle cx="29.54" cy="29.54" r="8" fill="currentColor" opacity="0.3"/>
+        <circle cx="80.46" cy="29.54" r="8" fill="currentColor" opacity="0.3"/>
+      </svg>
+      <div class="font-serif font-semibold text-[19px] tracking-[-0.01em]">
+        Flavio Tulino
+        <span class="block font-mono font-normal text-[11px] tracking-[0.12em] uppercase text-ink-faint mt-0.5">Structured hiring for engineering teams</span>
       </div>
-      <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">Get in touch</a>
     </div>
+    <a class="btn px-3 py-2 text-xs sm:px-[18px] sm:py-[11px] sm:text-[13px]" href="https://calendly.com/flavio-tulino/meet-me" target="_blank" rel="noopener noreferrer">Book a free call</a>
   </div>
 </header>
 
+<div class="wrap px-5 sm:px-8 pt-3">
+  <div class="theme-toggle" role="group" aria-label="Theme">
+    <button type="button" class="theme-btn" data-theme-choice="light" aria-pressed="true">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      Light
+    </button>
+    <button type="button" class="theme-btn" data-theme-choice="dark" aria-pressed="false">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      Dark
+    </button>
+  </div>
+</div>
+
 <main>
-  <section class="section-pad pt-[88px] pb-16">
+  <section class="section-pad pt-8 sm:pt-10 pb-16">
     <div class="wrap px-5 sm:px-8">
       <p class="eyebrow">Fractional Hiring Manager for Engineering Teams</p>
       <h1 class="mt-[22px] text-[clamp(34px,5vw,54px)] max-w-[16ch]">A bad senior hire costs more than a salary.</h1>
       <p class="mt-[22px] text-[19px] text-ink-soft max-w-[52ch]">It costs months of runway, team momentum, and trust. I run the interview process for engineering leaders who'd rather hear an honest no than a convenient yes.</p>
       <div class="flex items-center gap-5 mt-[34px] flex-wrap">
-        <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">Get in touch</a>
+        <a class="btn" href="https://calendly.com/flavio-tulino/meet-me" target="_blank" rel="noopener noreferrer">Book a free call</a>
         <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
       </div>
     </div>
@@ -419,12 +449,27 @@ html{ scroll-behavior:smooth; }
 <footer class="text-center pt-[88px] pb-16">
   <div class="wrap px-5 sm:px-8">
     <h2 class="text-[clamp(28px,4vw,42px)] max-w-[18ch] mx-auto">If this matches how you want to hire, let's talk.</h2>
-    <p class="text-ink-soft text-[17px] max-w-[44ch] mt-5 mx-auto">Get in touch for a conversation about your next senior engineering hire.</p>
+    <p class="text-ink-soft text-[17px] max-w-[44ch] mt-5 mx-auto">Book a free call, or reach out directly. Three ways to get in touch:</p>
     <div class="mt-8 flex justify-center gap-[18px] flex-wrap">
-      <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">flavio.tulino@gmail.com</a>
+      <a class="btn" href="https://calendly.com/flavio-tulino/meet-me" target="_blank" rel="noopener noreferrer">Book a free call</a>
+      <a class="btn-ghost" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">flavio.tulino@gmail.com</a>
+      <a class="btn-ghost" href="https://www.linkedin.com/in/flaviotulino/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
     </div>
     <div class="fineprint">
-      <span>© 2026 Flavio Tulino</span>
+      <span class="flex items-center gap-1.5">
+        <svg width="14" height="14" viewBox="0 0 110 110" role="img" aria-label="Flavio Tulino logo" class="text-accent shrink-0">
+          <circle cx="55" cy="55" r="17" fill="currentColor"/>
+          <circle cx="91" cy="55" r="11" fill="currentColor" opacity="0.3"/>
+          <circle cx="55" cy="91" r="11" fill="currentColor" opacity="0.3"/>
+          <circle cx="19" cy="55" r="11" fill="currentColor" opacity="0.3"/>
+          <circle cx="55" cy="19" r="11" fill="currentColor" opacity="0.3"/>
+          <circle cx="80.46" cy="80.46" r="8" fill="currentColor" opacity="0.3"/>
+          <circle cx="29.54" cy="80.46" r="8" fill="currentColor" opacity="0.3"/>
+          <circle cx="29.54" cy="29.54" r="8" fill="currentColor" opacity="0.3"/>
+          <circle cx="80.46" cy="29.54" r="8" fill="currentColor" opacity="0.3"/>
+        </svg>
+        © 2026 Flavio Tulino
+      </span>
       <span>Structured hiring for engineering teams</span>
     </div>
   </div>
@@ -434,8 +479,16 @@ html{ scroll-behavior:smooth; }
 (function(){
   var root = document.documentElement;
   var themeButtons = document.querySelectorAll(".theme-btn");
+  function effectiveTheme(){
+    var attr = root.getAttribute("data-theme");
+    if (attr) return attr;
+    try{
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+    }catch(e){}
+    return "light";
+  }
   function syncThemeButtons(){
-    var current = root.getAttribute("data-theme") || "light";
+    var current = effectiveTheme();
     themeButtons.forEach(function(b){
       var isActive = b.getAttribute("data-theme-choice") === current;
       b.classList.toggle("active", isActive);
