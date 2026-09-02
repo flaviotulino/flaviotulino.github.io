@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+(function(){
+  var t = "light";
+  try{ t = localStorage.getItem("theme") || "light"; }catch(e){}
+  document.documentElement.setAttribute("data-theme", t);
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flavio Tulino | Fractional Hiring Manager for Engineering Teams</title>
+<meta name="description" content="Flavio Tulino is a fractional hiring manager who runs structured interview processes for senior engineering hires, backed by evidence instead of gut feel.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Flavio Tulino">
+<meta name="keywords" content="fractional hiring manager, structured hiring, engineering hiring, technical interview process, evidence-based hiring, senior engineer hiring, interview loop design">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Flavio Tulino | Fractional Hiring Manager for Engineering Teams">
+<meta property="og:description" content="Structured interview processes for senior engineering hires, backed by evidence instead of gut feel. I design the loop, run the interviews, and deliver a hire or no-hire report.">
+<meta property="og:site_name" content="Flavio Tulino — Structured Hiring">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flavio Tulino | Fractional Hiring Manager for Engineering Teams">
+<meta name="twitter:description" content="Structured interview processes for senior engineering hires, backed by evidence instead of gut feel.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Flavio Tulino — Structured Hiring for Engineering Teams",
+  "description": "Fractional hiring manager service running structured interview processes for senior and high-stakes engineering hires, built on evidence rather than gut feel.",
+  "serviceType": "Fractional Hiring Manager",
+  "areaServed": "Remote / Global",
+  "provider": {
+    "@type": "Person",
+    "name": "Flavio Tulino",
+    "jobTitle": "Fractional Hiring Manager",
+    "email": "flavio.tulino@gmail.com"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Tailwind (Play CDN, no build step) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: 'var(--bg)',
+          surface: 'var(--surface)',
+          'surface-2': 'var(--surface-2)',
+          ink: 'var(--ink)',
+          'ink-soft': 'var(--ink-soft)',
+          'ink-faint': 'var(--ink-faint)',
+          line: 'var(--line)',
+          accent: 'var(--accent)',
+          'accent-ink': 'var(--accent-ink)',
+          'accent-soft': 'var(--accent-soft)',
+          stamp: 'var(--stamp)',
+          'stamp-soft': 'var(--stamp-soft)',
+        },
+        fontFamily: {
+          serif: ['Spectral', 'Georgia', 'Times New Roman', 'serif'],
+          sans: ['IBM Plex Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+          mono: ['IBM Plex Mono', 'ui-monospace', 'SF Mono', 'Menlo', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Design tokens: three-state theme (system / explicit light / explicit dark). -->
+<style>
+:root{
+  --bg:#eef0e9;
+  --surface:#f5f6ef;
+  --surface-2:#e2e6dc;
+  --ink:#171b16;
+  --ink-soft:#545c50;
+  --ink-faint:#848c7e;
+  --line:#c9cfc0;
+  --accent:#35594c;
+  --accent-ink:#eef4f0;
+  --accent-soft:#e2ece5;
+  --stamp:#a4472a;
+  --stamp-soft:#f3e3dc;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14181a;
+    --surface:#1b211c;
+    --surface-2:#212821;
+    --ink:#eceee7;
+    --ink-soft:#a7af9e;
+    --ink-faint:#78806f;
+    --line:#2e362f;
+    --accent:#7fbba0;
+    --accent-ink:#0f1e17;
+    --accent-soft:#1c2b23;
+    --stamp:#e08a63;
+    --stamp-soft:#2c211b;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181a;
+  --surface:#1b211c;
+  --surface-2:#212821;
+  --ink:#eceee7;
+  --ink-soft:#a7af9e;
+  --ink-faint:#78806f;
+  --line:#2e362f;
+  --accent:#7fbba0;
+  --accent-ink:#0f1e17;
+  --accent-soft:#1c2b23;
+  --stamp:#e08a63;
+  --stamp-soft:#2c211b;
+}
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}
+</style>
+
+<!-- Reusable patterns, built entirely from the Tailwind config above. -->
+<style type="text/tailwindcss">
+  @layer base {
+    body{ @apply bg-bg text-ink font-sans text-base leading-relaxed antialiased; }
+    h1, h2, h3{ @apply font-serif font-semibold leading-[1.12] tracking-[-0.01em] text-balance; }
+    main h2{ @apply text-[clamp(26px,3.4vw,36px)] max-w-[22ch]; }
+  }
+  @layer components {
+    .wrap{ @apply max-w-[1080px] mx-auto; }
+    .section-pad{ @apply py-[76px] border-b border-line; }
+
+    .eyebrow{ @apply font-mono text-xs font-medium tracking-[0.14em] uppercase text-ink-faint flex items-center gap-2.5; }
+    .eyebrow::before{ content:''; @apply w-4 h-px bg-accent inline-block; }
+
+    .btn{ @apply font-mono text-[13px] font-medium tracking-wide no-underline inline-flex items-center gap-2 px-[18px] py-[11px] rounded border border-accent bg-accent text-accent-ink transition-opacity; }
+    .btn:hover{ @apply opacity-85; }
+    .btn:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
+
+    .theme-toggle{ @apply inline-flex border border-line rounded-full p-[3px] gap-0.5; }
+    .theme-btn{ @apply font-mono text-[11.5px] tracking-wide uppercase px-3 py-1.5 rounded-full border-0 bg-transparent text-ink-faint cursor-pointer transition-colors; }
+    .theme-btn:hover:not(.active){ @apply text-ink; }
+    .theme-btn:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
+    .theme-btn.active{ @apply bg-accent text-accent-ink; }
+
+    .scroll-cue{ @apply font-mono text-[13px] text-ink-faint no-underline transition-colors; }
+    .scroll-cue:hover{ @apply text-accent; }
+
+    .section-body{ @apply mt-5 max-w-[64ch] text-ink-soft text-[16.5px]; }
+    .section-body p + p{ @apply mt-3.5; }
+
+    .list-clean{ @apply list-none mt-[22px] p-0 flex flex-col gap-3; }
+    .list-clean li{ @apply pl-[22px] relative text-ink-soft; }
+    .list-clean li::before{ content:'•'; @apply absolute left-0 text-accent; }
+
+    .cost-chart{ @apply mt-10 border border-line rounded bg-surface p-[22px_18px_20px] sm:p-[28px_28px_26px]; }
+    .chart-label{ @apply font-mono text-[11px] tracking-[0.1em] uppercase text-ink-faint mb-[22px]; }
+    .chart-row{ @apply grid grid-cols-[110px_1fr_58px] sm:grid-cols-[170px_1fr_78px] items-center gap-2.5 sm:gap-4 py-[9px] transition-opacity duration-200; }
+    .chart-row.dim{ @apply opacity-[0.35]; }
+    .chart-name{ @apply text-[12.5px] sm:text-sm font-medium; }
+    .chart-track{ @apply relative h-[10px] bg-surface-2 rounded-sm; }
+    .chart-bar{ @apply absolute top-0 left-0 h-full rounded-sm bg-accent; }
+    .chart-bar.range{ @apply bg-stamp; }
+    .chart-value{ @apply font-mono text-[13px] tabular-nums text-right text-ink-soft; }
+    .chart-axis{ @apply grid grid-cols-[110px_1fr_58px] sm:grid-cols-[170px_1fr_78px] gap-2.5 sm:gap-4 mt-1; }
+    .axis-track{ @apply relative h-4; }
+    .axis-track span{ @apply absolute top-0 -translate-x-1/2 font-mono text-[11px] text-ink-faint; }
+    .chart-caption{ @apply mt-6 max-w-[60ch] text-[15px] text-ink-soft; }
+    .chart-source{ @apply mt-3 font-mono text-[11.5px] text-ink-faint; }
+
+    .source-tabs{ @apply flex flex-wrap gap-2 mb-[26px]; }
+    .source-tab{ @apply font-mono text-xs font-medium text-ink-soft bg-transparent border border-line rounded-full px-[15px] py-2 cursor-pointer transition-colors; }
+    .source-tab:hover{ @apply border-accent text-ink; }
+    .source-tab:focus-visible{ @apply outline outline-2 outline-accent outline-offset-2; }
+    .source-tab.active{ @apply bg-accent border-accent text-accent-ink; }
+
+    .process{ @apply mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line rounded overflow-hidden; }
+    .process .step{ @apply bg-surface p-6; }
+    .process .num{ @apply font-mono text-[13px] text-accent tracking-wide; }
+    .process h3{ @apply text-lg mt-3.5; }
+    .process p{ @apply mt-2.5 text-[14.5px] text-ink-soft leading-[1.55]; }
+
+    .principles{ @apply mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4; }
+    .principle{ @apply bg-surface border border-line rounded p-[22px] pb-6; }
+    .tag{ @apply inline-block font-mono text-[11px] tracking-[0.1em] uppercase text-accent bg-accent-soft px-[9px] py-1 rounded-sm; }
+    .principle h3{ @apply text-[17px] mt-3.5 font-semibold; }
+    .principle p{ @apply mt-2 text-[14.5px] text-ink-soft leading-[1.6]; }
+
+    .stat-band{ @apply py-[76px] border-b border-line bg-surface-2; }
+    .stat-row{ @apply flex items-center gap-8 mt-[26px] flex-wrap; }
+    .stat{ @apply flex flex-col; }
+    .stat-num{ @apply font-serif font-semibold text-[clamp(40px,6vw,60px)] tabular-nums leading-none; }
+    .stat-num.accent{ @apply text-accent; }
+    .stat-label{ @apply mt-2 font-mono text-[11.5px] tracking-[0.08em] uppercase text-ink-faint; }
+    .stat-sep{ @apply font-serif italic text-lg text-ink-faint; }
+    .stat-explain{ @apply mt-7 max-w-[58ch] text-[16.5px] text-ink-soft; }
+
+    .strip{ @apply grid grid-cols-1 md:grid-cols-2; }
+    .strip-col{ @apply py-14 px-6 md:py-[76px] md:px-10 border-b border-line last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0; }
+
+    .fineprint{ @apply mt-16 pt-6 border-t border-line font-mono text-xs text-ink-faint flex justify-between flex-wrap gap-2.5; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sticky top-0 z-10 bg-bg border-b border-line">
+  <div class="wrap px-5 sm:px-8 flex items-center justify-between py-5">
+    <div class="font-serif font-semibold text-[19px] tracking-[-0.01em]">
+      Flavio Tulino
+      <span class="block font-mono font-normal text-[11px] tracking-[0.12em] uppercase text-ink-faint mt-0.5">Structured hiring for engineering teams</span>
+    </div>
+    <div class="flex items-center gap-3.5">
+      <div class="theme-toggle" role="group" aria-label="Theme">
+        <button type="button" class="theme-btn" data-theme-choice="light" aria-pressed="true">Light</button>
+        <button type="button" class="theme-btn" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+      <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section-pad pt-[88px] pb-16">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">Fractional Hiring Manager for Engineering Teams</p>
+      <h1 class="mt-[22px] text-[clamp(34px,5vw,54px)] max-w-[16ch]">A bad senior hire costs more than a salary.</h1>
+      <p class="mt-[22px] text-[19px] text-ink-soft max-w-[52ch]">It costs months of runway, team momentum, and trust. I run the interview process for engineering leaders who'd rather hear an honest no than a convenient yes.</p>
+      <div class="flex items-center gap-5 mt-[34px] flex-wrap">
+        <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">Get in touch</a>
+        <a class="scroll-cue" href="#how-it-works">See how it works ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem" class="section-pad">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">The problem</p>
+      <h2>Most hiring processes run on gut feel, not evidence.</h2>
+      <div class="section-body">
+        <p>It usually goes the same way: an interview loop that's inconsistent, badly documented, and leaning more on first impressions than proof. Nobody notices until months later, when it's already expensive to fix.</p>
+      </div>
+
+      <div class="cost-chart">
+        <p class="chart-label">Cost of a bad hire, as % of annual salary</p>
+        <p class="section-body !mt-0 !mb-6 !text-[15px]">Estimates vary by country and method, but they agree on the direction: replacing someone costs far more than their salary alone.</p>
+
+        <div class="source-tabs" role="tablist">
+          <button class="source-tab active" type="button" data-source="uk" aria-pressed="true">UK: REC / Oxford Economics</button>
+          <button class="source-tab" type="button" data-source="dol" aria-pressed="false">US: Department of Labor</button>
+          <button class="source-tab" type="button" data-source="shrm" aria-pressed="false">US: SHRM</button>
+        </div>
+
+        <div class="chart-row" data-row="uk">
+          <span class="chart-name">UK (REC / Oxford Economics)</span>
+          <div class="chart-track"><div class="chart-bar range" style="left:71.4%; width:23.8%"></div></div>
+          <span class="chart-value">300–400%</span>
+        </div>
+        <div class="chart-row dim" data-row="dol">
+          <span class="chart-name">US (Dept. of Labor)</span>
+          <div class="chart-track"><div class="chart-bar" style="width:7.1%"></div></div>
+          <span class="chart-value">30%</span>
+        </div>
+        <div class="chart-row dim" data-row="shrm">
+          <span class="chart-name">US (SHRM)</span>
+          <div class="chart-track"><div class="chart-bar range" style="left:11.9%; width:35.7%"></div></div>
+          <span class="chart-value">50–200%</span>
+        </div>
+
+        <div class="chart-axis">
+          <span></span>
+          <div class="axis-track">
+            <span style="left:0%">0%</span>
+            <span style="left:23.8%">100%</span>
+            <span style="left:47.6%">200%</span>
+            <span style="left:71.4%">300%</span>
+            <span style="left:95.2%">400%</span>
+          </div>
+          <span></span>
+        </div>
+
+        <p class="chart-caption" id="chart-detail">In the UK, the Recruitment &amp; Employment Confederation and Oxford Economics put the real cost of a bad hire at three to four times the person's salary, once training and lost productivity are counted. For a mid-level manager on £42,000, that works out to about £132,000.</p>
+        <p class="chart-source" id="chart-source-cite">Source: Recruitment &amp; Employment Confederation (REC) and Oxford Economics, in partnership with Unum.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="what-i-do" class="section-pad">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">What I do</p>
+      <h2>I run the interview process. I don't source candidates.</h2>
+      <div class="section-body">
+        <p>I'm not a recruiter, and I don't work on volume. I design the interview loop, run the interviews myself, and hand you a hire or no-hire recommendation you can trust.</p>
+      </div>
+      <ul class="list-clean">
+        <li>Design the interview loop, mapped to what actually matters for this hire</li>
+        <li>Run every stage myself, scored against a consistent rubric</li>
+        <li>Give you a clear recommendation, with the evidence and the risks laid out</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="section-pad">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">How it works</p>
+      <h2>Four stages, agreed before a single interview happens.</h2>
+      <div class="process">
+        <div class="step">
+          <span class="num">01</span>
+          <h3>Kickoff</h3>
+          <p>A working session with you and your team to define exactly what great looks like for this role. Not a generic job spec: the real bar you're hiring against.</p>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <h3>Loop design</h3>
+          <p>A structured interview plan, mapped to the competencies that matter for this hire, agreed with you before a single interview happens.</p>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <h3>Structured interviews</h3>
+          <p>Every stage gets scored against a consistent rubric. Evidence is captured in the room, not reconstructed from memory afterward.</p>
+        </div>
+        <div class="step">
+          <span class="num">04</span>
+          <h3>The report</h3>
+          <p>A clear recommendation, reasoned competency by competency: the risks if you hire, and how confident I actually am.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-i-work" class="section-pad">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">How I work</p>
+      <h2>The standard every engagement is held to.</h2>
+      <div class="principles">
+        <div class="principle">
+          <span class="tag">Trust</span>
+          <h3>Mutual, both ways</h3>
+          <p>You're handing me one of the most consequential decisions your team will make this quarter. In return, I need everything relevant: the context, the constraints, and the history of what's gone wrong before.</p>
+        </div>
+        <div class="principle">
+          <span class="tag">Honesty</span>
+          <h3>Straight answers, always</h3>
+          <p>My read on every candidate is unbiased and backed by evidence. If someone isn't right for the role, you'll hear that clearly. I don't soften a call just to keep a process feeling smooth.</p>
+        </div>
+        <div class="principle">
+          <span class="tag">AI policy</span>
+          <h3>A tool, not a judge</h3>
+          <p>I use AI to take notes and help write reports clearly. I never ask it for an opinion. Every assessment, every score, every recommendation is mine, built on what I actually saw and heard in the room.</p>
+        </div>
+        <div class="principle">
+          <span class="tag">Fees</span>
+          <h3>Priced per hire</h3>
+          <p>I don't price by interview count or seniority as a blunt formula. We scope the effort a role actually needs together, then price it, because what you're paying for is the outcome, not a set of meetings.</p>
+        </div>
+        <div class="principle">
+          <span class="tag">Collaboration</span>
+          <h3>With your team, not around it</h3>
+          <p>What great looks like for a role isn't something I decide alone from a spec. It comes from the people who'll manage this person, sit next to them, and depend on them.</p>
+        </div>
+        <div class="principle">
+          <span class="tag">Accountability</span>
+          <h3>I am your team</h3>
+          <p>I will never recommend a hire I don't believe is right. Not to close the engagement faster, not because it's the easier answer. If I wouldn't hire this person myself, I won't tell you to.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stat-band">
+    <div class="wrap px-5 sm:px-8">
+      <p class="eyebrow">The evidence</p>
+      <h2>Why structured interviews work</h2>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-num">0.38</span>
+          <span class="stat-label">Unstructured interviews</span>
+        </div>
+        <div class="stat-sep">vs</div>
+        <div class="stat">
+          <span class="stat-num accent">0.51</span>
+          <span class="stat-label">Structured interviews</span>
+        </div>
+      </div>
+      <p class="stat-explain">Structured interviews predict job performance meaningfully better than unstructured ones. That's not a stylistic choice. It's the reason the whole process is built this way.</p>
+      <p class="chart-source">Source: Schmidt &amp; Hunter, meta-analysis of personnel selection methods, Psychological Bulletin (1998, updated 2016)</p>
+    </div>
+  </div>
+
+  <section class="border-b border-line">
+    <div class="wrap">
+      <div class="strip">
+        <div class="strip-col">
+          <p class="eyebrow">Who this is for</p>
+          <h2 class="!text-2xl !max-w-none mt-4">Engineering leaders hiring senior or high-stakes roles</h2>
+          <p class="section-body !mt-3.5">Who want a structured process without having to build and run it themselves, and who'd rather hear an honest no than a convenient yes.</p>
+        </div>
+        <div class="strip-col">
+          <p class="eyebrow">Pricing</p>
+          <h2 class="!text-2xl !max-w-none mt-4">Priced per hire, not per interview</h2>
+          <p class="section-body !mt-3.5">Every engagement gets scoped together before we start: how many stages, how much structure, how much time. Then it's priced accordingly. You're paying for the outcome, not the hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="text-center pt-[88px] pb-16">
+  <div class="wrap px-5 sm:px-8">
+    <h2 class="text-[clamp(28px,4vw,42px)] max-w-[18ch] mx-auto">If this matches how you want to hire, let's talk.</h2>
+    <p class="text-ink-soft text-[17px] max-w-[44ch] mt-5 mx-auto">Get in touch for a conversation about your next senior engineering hire.</p>
+    <div class="mt-8 flex justify-center gap-[18px] flex-wrap">
+      <a class="btn" href="mailto:flavio.tulino@gmail.com?subject=Structured%20hiring%20engagement">flavio.tulino@gmail.com</a>
+    </div>
+    <div class="fineprint">
+      <span>© 2026 Flavio Tulino</span>
+      <span>Structured hiring for engineering teams</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var themeButtons = document.querySelectorAll(".theme-btn");
+  function syncThemeButtons(){
+    var current = root.getAttribute("data-theme") || "light";
+    themeButtons.forEach(function(b){
+      var isActive = b.getAttribute("data-theme-choice") === current;
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+  themeButtons.forEach(function(b){
+    b.addEventListener("click", function(){
+      var choice = b.getAttribute("data-theme-choice");
+      root.setAttribute("data-theme", choice);
+      try{ localStorage.setItem("theme", choice); }catch(e){}
+      syncThemeButtons();
+    });
+  });
+  syncThemeButtons();
+})();
+
+(function(){
+  var detail = {
+    uk: {
+      caption: "In the UK, the Recruitment & Employment Confederation and Oxford Economics put the real cost of a bad hire at three to four times the person's salary, once training and lost productivity are counted. For a mid-level manager on £42,000, that works out to about £132,000.",
+      source: "Source: Recruitment & Employment Confederation (REC) and Oxford Economics, in partnership with Unum."
+    },
+    dol: {
+      caption: "The U.S. Department of Labor's estimate is more conservative: at least 30% of the employee's first-year salary, before factoring in lost productivity or team disruption.",
+      source: "Source: U.S. Department of Labor."
+    },
+    shrm: {
+      caption: "SHRM's research puts the real cost between half and twice the employee's annual salary, climbing fastest for senior or highly specialised roles, like engineering.",
+      source: "Source: SHRM (Society for Human Resource Management)."
+    }
+  };
+  var tabs = document.querySelectorAll(".source-tab");
+  var rows = document.querySelectorAll(".chart-row");
+  var captionEl = document.getElementById("chart-detail");
+  var sourceEl = document.getElementById("chart-source-cite");
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      var key = tab.getAttribute("data-source");
+      tabs.forEach(function(t){
+        t.classList.remove("active");
+        t.setAttribute("aria-pressed", "false");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-pressed", "true");
+      rows.forEach(function(row){
+        row.classList.toggle("dim", row.getAttribute("data-row") !== key);
+      });
+      if (detail[key]){
+        captionEl.textContent = detail[key].caption;
+        sourceEl.textContent = detail[key].source;
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
